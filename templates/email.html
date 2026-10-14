@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ assunto }}</title>
+</head>
+
+<body style="margin: 0; padding: 0; background-color: #f4f6f8;
+             font-family: Arial, Helvetica, sans-serif; color: #333333;">
+
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0"
+           style="background-color: #f4f6f8; padding: 24px 10px;">
+        <tr>
+            <td align="center">
+
+                <table role="presentation" width="600" cellspacing="0"
+                       cellpadding="0"
+                       style="width: 100%; max-width: 600px;
+                              background-color: #ffffff; border-radius: 8px;">
+
+                    <tr>
+                        <td style="padding: 30px 28px;">
+
+                            <h2 style="margin-top: 0; color: #1f4e79;">
+                                Olá, {{ nome }}!
+                            </h2>
+
+                            <p style="font-size: 15px; line-height: 1.7;">
+                                Esperamos que esteja tudo bem com você.
+                            </p>
+
+                            <div style="font-size: 15px; line-height: 1.7;">
+                                {{ mensagem }}
+                            </div>
+
+                            <p style="font-size: 15px; line-height: 1.7;">
+                                Ficamos à disposição para conversar.
+                            </p>
+
+                            <p style="font-size: 15px; line-height: 1.7;">
+                                Atenciosamente,<br>
+                                <strong>{{ assinatura }}</strong>
+                            </p>
+
+                            <hr style="border: none; border-top: 1px solid #eeeeee;
+                                       margin-top: 28px;">
+
+                            <p style="font-size: 11px; line-height: 1.5;
+                                      color: #777777;">
+                                Você recebeu esta mensagem por estar em nossa
+                                lista de contatos. Caso não queira receber
+                                novas comunicações, utilize o mecanismo de
+                                descadastramento disponibilizado pelo remetente.
+                            </p>
+
+                        </td>
+                    </tr>
+
+                </table>
+
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
