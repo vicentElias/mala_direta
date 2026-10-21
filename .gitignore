@@ -147,3 +147,12 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Python / VS Code - projeto mala_direta
+.venv/
+__pycache__/
+*.pyc
+.vscode/
+
+# Variáveis de ambiente / credenciais
+.env
