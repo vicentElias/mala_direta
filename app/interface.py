@@ -34,8 +34,11 @@ opcao = st.sidebar.radio(
         "Consultar campanhas",
         "Pré-visualizar e-mail",
         "Editar campanha",
+        "Consultar destinatários",
     ],
 )
+
+from app.destinatarios import listar_destinatarios
 
 
 def montar_modelo(assunto, mensagem):
@@ -338,3 +341,100 @@ elif opcao == "Editar campanha":
                     st.error(
                         f"Não foi possível atualizar a campanha: {erro}"
                     )
+
+
+
+elif opcao == "Consultar destinatários":
+    st.subheader("Gerenciamento de destinatários")
+
+    try:
+        destinatarios = listar_destinatarios()
+
+        total = len(destinatarios)
+        ativos = sum(1 for d in destinatarios if d[4])
+        inativos = total - ativos
+
+        col1, col2, col3 = st.columns(3)
+
+        col1.metric("Total de destinatários", total)
+        col2.metric("Ativos", ativos)
+        col3.metric("Inativos", inativos)
+
+        if not destinatarios:
+            st.info("Nenhum destinatário cadastrado.")
+
+        else:
+            pesquisa = st.text_input(
+                "Pesquisar destinatário",
+                placeholder="Digite nome, empresa ou e-mail",
+            )
+
+            filtrados = [
+                d for d in destinatarios
+                if pesquisa.strip().casefold() in (
+                    f"{d[1] or ''} "
+                    f"{d[2] or ''} "
+                    f"{d[3] or ''}"
+                ).casefold()
+            ]
+
+            st.caption(
+                f"Exibindo {len(filtrados)} de {total} destinatários"
+            )
+
+            if not filtrados:
+                st.warning("Nenhum contato encontrado para essa pesquisa.")
+
+            else:
+                linhas = [
+                    {
+                        "ID": d[0],
+                        "Nome": d[1] or "",
+                        "Empresa": d[2] or "",
+                        "E-mail": d[3],
+                        "Status": "Ativo" if d[4] else "Inativo",
+                    }
+                    for d in filtrados
+                ]
+
+                evento = st.dataframe(
+                    linhas,
+                    hide_index=True,
+                    use_container_width=True,
+                    on_select="rerun",
+                    selection_mode="single-row",
+                    key="tabela_destinatarios",
+                )
+
+                selecionadas = evento.selection.rows
+
+                if selecionadas:
+                    indice = selecionadas[0]
+                    contato_id = linhas[indice]["ID"]
+
+                    contato = next(
+                        d for d in filtrados
+                        if d[0] == contato_id
+                    )
+
+                    st.divider()
+                    st.subheader("Detalhes do destinatário")
+
+                    st.write(f"**ID:** {contato[0]}")
+                    st.write(f"**Nome:** {contato[1] or 'Não informado'}")
+                    st.write(f"**Empresa:** {contato[2] or 'Não informada'}")
+                    st.write(f"**E-mail:** {contato[3]}")
+                    st.write(
+                        f"**Status:** {'Ativo' if contato[4] else 'Inativo'}"
+                    )
+                    st.write(f"**Data de cadastro:** {contato[5]}")
+
+                else:
+                    st.info(
+                        "Selecione uma linha da tabela para visualizar "
+                        "os detalhes do destinatário."
+                    )
+
+    except Exception as erro:
+        st.error("Não foi possível consultar os destinatários.")
+        st.code(str(erro))
